@@ -4,7 +4,8 @@
   },
   "globals": {
     "$": false,
-    "L": false
+    "L": false,
+    "cartodb": false
   },
   "rules": {
    "indent": [2, 2],
