@@ -2,27 +2,47 @@ $(function () {
 
   'use strict';
 
-  var ctx = $('#chart-damyearbuilt').get(0).getContext('2d');
+  // For now, trigger chart creation with a sql call here.
+  // This should really be done by an event triggered by the map.
+  var sql = new cartodb.SQL({ user: 'clientdemos' });
+  sql.execute('SELECT * FROM usgs_drip_dams').done(function (data) {
 
-  var yearBuiltArray = [1750, 1789, 1830, 1835, 1837, 1841, 1848, 1850, 1850, 1851, 1852, 1855, 1855, 1856, 1857, 1860, 1860, 1865, 1872, 1874, 1889, 1895, 1898, 1900, 1900, 1900, 1901, 1901, 1902, 1902, 1902, 1903, 1905, 1907, 1907, 1908, 1908, 1909, 1910, 1912, 1912, 1912, 1913, 1913, 1913, 1914, 1915, 1919, 1921, 1921, 1922, 1923, 1924, 1925, 1925, 1927, 1927, 1928, 1928, 1928, 1929, 1929, 1930, 1931, 1932, 1935, 1936, 1937, 1939, 1939, 1940, 1945, 1950, 1955, 1955, 1955, 1955, 1956, 1958, 1960, 1965, 1968, 1969, 1975, 1975, 1989];
-  var yearData = getYearData(yearBuiltArray);
-
-  var chartData = {
-    labels: yearData.labels,
-    datasets: [
-      {
-        fillColor: 'rgba(151,187,205,0.2)',
-        strokeColor: 'rgba(151,187,205,1)',
-        pointColor: 'rgba(151,187,205,1)',
-        pointStrokeColor: '#fff',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(151,187,205,1)',
-        data: yearData.data
+    // Extract the year built values from each dam into an arrray.
+    var yearBuiltArray = data.rows.reduce(function (result, dam) {
+      var year = dam.damyearbuiltremovedstructure || dam.damyearbuiltoriginalstructure;
+      if (year) {
+        result.push(parseInt(year));
       }
-    ]
-  };
+      return result;
+    }, []);
 
-  new Chart(ctx).Line(chartData, { responsive: true });
+    // Create the chart with just the year built data.
+    createChart(yearBuiltArray);
+
+  });
+
+  function createChart(yearBuiltArray) {
+    var ctx = $('#chart-damyearbuilt').get(0).getContext('2d');
+    var yearData = getYearData(yearBuiltArray);
+
+    var chartData = {
+      labels: yearData.labels,
+      datasets: [
+        {
+          fillColor: 'rgba(151,187,205,0.2)',
+          strokeColor: 'rgba(151,187,205,1)',
+          pointColor: 'rgba(151,187,205,1)',
+          pointStrokeColor: '#fff',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(151,187,205,1)',
+          data: yearData.data
+        }
+      ]
+    };
+
+    new Chart(ctx).Line(chartData, { responsive: true });
+
+  }
 
   /**
    * Quantizes years into ranges, an returns labels and data for building a chart of year counts.
