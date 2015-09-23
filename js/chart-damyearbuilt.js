@@ -29,18 +29,18 @@ $(function () {
       labels: yearData.labels,
       datasets: [
         {
-          fillColor: 'rgba(151,187,205,0.2)',
-          strokeColor: 'rgba(151,187,205,1)',
-          pointColor: 'rgba(151,187,205,1)',
-          pointStrokeColor: '#fff',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(151,187,205,1)',
+          fillColor: '#43808A',
+          strokeColor: '#43808A',
           data: yearData.data
         }
       ]
     };
 
-    new Chart(ctx).Line(chartData, { responsive: true });
+    new Chart(ctx).Bar(chartData, {
+      responsive: true,
+      scaleFontSize: 11,
+      tooltipFontSize: 12
+    });
 
   }
 
