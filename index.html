@@ -12,12 +12,55 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div id="map"></div>
+    <div class="container">
+      <h1>Dam Removal Information Portal</h1>
+    </div>
+
+    <div id="map" class="wide-map"></div>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-6">
+          <h3>Dam Height</h3>
+          <div class="chart-placeholder"></div>
+        </div>
+
+        <div class="col-md-6">
+          <h3>Year Built</h3>
+          <div class="chart-container">
+            <canvas id="chart-damyearbuilt" class="chart-damyearbuilt"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <h3>Study Types</h3>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="chart-placeholder"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart-placeholder"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart-placeholder"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <footer>
+        Copyright USGS, AppGeo 2015
+      </footer>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/eventbus.js"></script>
+    <script src="js/chart-damyearbuilt.js"></script>
+    <script src="js/map.js"></script>
   </body>
 </html>
