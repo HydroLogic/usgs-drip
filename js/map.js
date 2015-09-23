@@ -8,4 +8,10 @@ $(function () {
   };
 
   cartodb.createVis('map', vizUrl, options);
+
+  // For now, trigger chart creation with a sql call here.
+  var sql = new cartodb.SQL({ user: 'clientdemos' });
+  sql.execute('SELECT * FROM usgs_drip_dams').done(function (data) {
+    amplify.publish('map.damsChanged', data.rows);
+  });
 });

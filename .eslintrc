@@ -7,8 +7,8 @@
     "jQuery": false,
     "L": false,
     "cartodb": false,
-    "Chart": false,
-    "App": true
+    "amplify": false,
+    "Chart": false
   },
   "rules": {
    "indent": [2, 2],

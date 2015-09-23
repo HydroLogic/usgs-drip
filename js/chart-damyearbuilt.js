@@ -2,13 +2,14 @@ $(function () {
 
   'use strict';
 
-  // For now, trigger chart creation with a sql call here.
-  // This should really be done by an event triggered by the map.
-  var sql = new cartodb.SQL({ user: 'clientdemos' });
-  sql.execute('SELECT * FROM usgs_drip_dams').done(function (data) {
+  amplify.subscribe('map.damsChanged', onDamsChanged);
+
+  function onDamsChanged(dams) {
+
+    // TODO: need to handle initial chart setup differently than subsequent updates.
 
     // Extract the year built values from each dam into an arrray.
-    var yearBuiltArray = data.rows.reduce(function (result, dam) {
+    var yearBuiltArray = dams.reduce(function (result, dam) {
       var year = dam.damyearbuiltremovedstructure || dam.damyearbuiltoriginalstructure;
       if (year) {
         result.push(parseInt(year));
@@ -19,7 +20,7 @@ $(function () {
     // Create the chart with just the year built data.
     createChart(yearBuiltArray);
 
-  });
+  }
 
   function createChart(yearBuiltArray) {
     var ctx = $('#chart-damyearbuilt').get(0).getContext('2d');
