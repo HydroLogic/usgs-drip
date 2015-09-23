@@ -12,48 +12,58 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div class="container">
-      <h1>Dam Removal Information Portal</h1>
-    </div>
 
-    <div id="map" class="wide-map"></div>
 
-    <div class="container">
-      <div class="row">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar-header">        
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">DRIP</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="http://usgs.gov">USGS</a></li>
+          <li><a href="https://github.com/AppGeo/usgs-drip">GitHub</a></li>
+        </ul>
+      </div>
+    </nav>
 
-        <div class="col-md-6">
-          <h3>Dam Height</h3>
-          <div class="chart-placeholder"></div>
+
+
+    <div class="main-container">
+
+      <div id="map" class="map"></div>
+
+      <div class="sidebar container">
+
+        <h3>Dam Height</h3>
+        <div class="chart-placeholder"></div>
+
+        <h3>Year Built</h3>
+        <div>
+          <canvas id="chart-damyearbuilt" class="chart-damyearbuilt" height="100"></canvas>
         </div>
 
-        <div class="col-md-6">
-          <h3>Year Built</h3>
-          <div class="chart-container">
-            <canvas id="chart-damyearbuilt" class="chart-damyearbuilt"></canvas>
+        <h3>Study Types</h3>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="chart-placeholder"></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="chart-placeholder"></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="chart-placeholder"></div>
           </div>
         </div>
 
-      </div>
+      </div><!-- end .sidebar -->
 
-      <h3>Study Types</h3>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="chart-placeholder"></div>
-        </div>
-        <div class="col-md-4">
-          <div class="chart-placeholder"></div>
-        </div>
-        <div class="col-md-4">
-          <div class="chart-placeholder"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <footer>
-        Copyright USGS, AppGeo 2015
-      </footer>
-    </div>
+    </div><!-- end .main-container -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>

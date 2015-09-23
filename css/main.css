@@ -8,32 +8,54 @@ html, body {
   margin: 0;
 }
 
-.wide-map {
-  height: 400px;
-  margin: 2em 0;
+.navbar-fixed-top {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+    0 3px 1px -2px rgba(0,0,0,.2),
+    0 1px 5px 0 rgba(0,0,0,.12);
+  border-bottom: 0;
 }
 
-.wide-map .cartodb-popup-header {
+.main-container {
+  position: absolute;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.map {
+  width: 60%;
+  height: 100%;
+}
+
+.sidebar {
+  width: 40%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  box-shadow: -2px 0 2px 0 rgba(0,0,0,.2);
+}
+
+.cartodb-popup .cartodb-popup-header {
   max-height: none !important;
 }
 
-.wide-map .cartodb-popup-header h4 {
+.cartodb-popup .cartodb-popup-header h4 {
   display: none;
 }
 
 .chart-placeholder {
   width: 100%;
-  height: 200px;
-  background-color: #ccc;
+  height: 100px;
+  background-color: #eee;
   padding: 1em;
 }
 
 .chart-placeholder:after {
   color: #ddd;
   content: "Placeholder";
-}
-
-footer {
-  margin: 2em 0;
-  font-size: .9em;
 }
