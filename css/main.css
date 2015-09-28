@@ -27,6 +27,7 @@ html, body {
 .map {
   width: 60%;
   height: 100%;
+  position: relative;
 }
 
 .sidebar {
@@ -58,4 +59,18 @@ html, body {
 .chart-placeholder:after {
   color: #ddd;
   content: "Placeholder";
+}
+
+.map-filters {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 190px;
+  z-index: 1;
+  background-color: white;
+  padding: 1em 1em .5em;
+  border-radius: 4px;
+  margin: 20px;
+  border: 1px solid #999;
+  box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;
 }

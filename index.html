@@ -36,7 +36,30 @@
 
     <div class="main-container">
 
-      <div id="map" class="map"></div>
+      <div id="map" class="map">
+        <div id="map-filters" class="map-filters">
+
+          <label class="control-label">Available study types:</label>
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="studytype" value="biological"> Biological
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="studytype" value="physical"> Physical
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="studytype" value="waterquality"> Water Quality
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <div class="sidebar container">
 
@@ -71,6 +94,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="js/vendor/amplify.core.min.js"></script>
     <script src="js/chart-damyearbuilt.js"></script>
+    <script src="js/map-filters.js"></script>
     <script src="js/map.js"></script>
   </body>
 </html>

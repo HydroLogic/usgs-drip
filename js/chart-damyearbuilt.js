@@ -2,13 +2,22 @@ $(function () {
 
   'use strict';
 
+  var chart;
+
   amplify.subscribe('map.damsChanged', onDamsChanged);
 
   function onDamsChanged(dams) {
+    var yearBuiltArray = getYearBuiltArray(dams);
+    var action = chart ? updateChart : createChart;
 
-    // TODO: need to handle initial chart setup differently than subsequent updates.
+    action(yearBuiltArray);
+  }
 
-    // Extract the year built values from each dam into an arrray.
+  /**
+   * Extract the year built values from each dam into an arrray.
+   * E.g. [1701, 1890, 1992, 1890, ...]
+   */
+  function getYearBuiltArray(dams) {
     var yearBuiltArray = dams.reduce(function (result, dam) {
       var year = dam.damyearbuiltremovedstructure || dam.damyearbuiltoriginalstructure;
       if (year) {
@@ -17,9 +26,7 @@ $(function () {
       return result;
     }, []);
 
-    // Create the chart with just the year built data.
-    createChart(yearBuiltArray);
-
+    return yearBuiltArray;
   }
 
   function createChart(yearBuiltArray) {
@@ -37,12 +44,48 @@ $(function () {
       ]
     };
 
-    new Chart(ctx).Bar(chartData, {
+    chart = new Chart(ctx).Bar(chartData, {
       responsive: true,
       scaleFontSize: 11,
       tooltipFontSize: 12
     });
+  }
 
+  function updateChart(yearBuiltArray) {
+    var dataset = chart.datasets[0];
+
+    // Return min/max values for each of the existing year range labels.
+    var bins = dataset.bars.map(function (bar) {
+      var label = bar.label;
+      var parts = label.split('-');
+      return {
+        min: parseInt(parts[0]),
+        max: parseInt(parts[1])
+      };
+    });
+
+    // Create a function which given an year, can return the appropriate bar.
+    var getBar = function getBar(year) {
+      for (var i = 0; i < bins.length; i++) {
+        var bin = bins[i];
+        if (year >= bin.min && year <= bin.max) {
+          return dataset.bars[i];
+        }
+      }
+    };
+
+    // Reset chart values.
+    dataset.bars.forEach(function (bar) {
+      bar.value = 0;
+    });
+
+    // Iterate through input years, incrementing chart values.
+    yearBuiltArray.forEach(function (year) {
+      getBar(year).value++;
+    });
+
+    // TODO: Figure out how to fix the scale before updating the data.
+    chart.update();
   }
 
   /**
