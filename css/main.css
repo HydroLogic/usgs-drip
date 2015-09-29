@@ -18,7 +18,7 @@ html, body {
 .main-container {
   position: absolute;
   top: 51px;
-  bottom: 0;
+  bottom: 300px;
   left: 0;
   right: 0;
   overflow: hidden;
@@ -88,4 +88,26 @@ html, body {
 
 .jspHorizontalBar {
   visibility: hidden;
+}
+
+.data-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  font-size: .9em;
+  box-shadow: -2px 0 2px 0 rgba(0,0,0,.2);
+  overflow: hidden;
+}
+
+.data-panel .dt-bootstrap {
+  margin-top: -8px;
+}
+
+.data-panel td {
+  white-space: nowrap;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
