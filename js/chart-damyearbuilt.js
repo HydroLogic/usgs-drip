@@ -20,8 +20,9 @@ $(function () {
   function getYearBuiltArray(dams) {
     var yearBuiltArray = dams.reduce(function (result, dam) {
       var year = dam.damyearbuiltremovedstructure || dam.damyearbuiltoriginalstructure;
-      if (year) {
-        result.push(parseInt(year));
+      var yearInt = parseInt(year);
+      if (yearInt) {
+        result.push(yearInt);
       }
       return result;
     }, []);

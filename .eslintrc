@@ -8,7 +8,9 @@
     "L": false,
     "cartodb": false,
     "amplify": false,
-    "Chart": false
+    "Chart": false,
+    "Mustache": false,
+    "App": true
   },
   "rules": {
    "indent": [2, 2],

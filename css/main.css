@@ -74,3 +74,18 @@ html, body {
   border: 1px solid #999;
   box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;
 }
+
+.dam-citations ol {
+  font-size: .9em;
+  list-style-position: inside;
+  margin-top: 5px;
+  padding-left: 0;
+}
+
+.dam-citations li {
+  margin-bottom: 5px;
+}
+
+.jspHorizontalBar {
+  visibility: hidden;
+}
