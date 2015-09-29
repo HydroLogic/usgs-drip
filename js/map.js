@@ -73,10 +73,7 @@ $(function () {
     'on dams.damaccessionnumber = res.res_damaccessionnumber ' +
     // Where clauses are inserted by replacement here.
     'where 1=1 and {{sqlWhere}}';
-  var CARTO_CSS = '#usgs_drip_dams { marker-fill-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 1; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 10; marker-fill: #FF6600; marker-allow-overlap: true; }' +
-    '#usgs_drip_dams[ar_uniqueid != null] { marker-fill: #33827e; }' +
-    '#usgs_drip_dams[hasresults=false],#usgs_drip_dams[hasresults=null] { marker-fill-opacity: 0.2; marker-line-opacity: 0.2; }';
-  var map, defaultLayer, activeLayer;
+  var damSubLayer;
 
 
   // Initialization
@@ -104,11 +101,9 @@ $(function () {
   }
 
   function onMapCreate(vis, layers) {
-    window.map = map = vis.getNativeMap();
-    defaultLayer = layers[1];
-    activeLayer = defaultLayer;
+    damSubLayer = layers[1].getSubLayer(0);
 
-    activeLayer.getSubLayer(0).infowindow.set({
+    damSubLayer.infowindow.set({
       template: infoWindowTemplate
     });
 
@@ -122,7 +117,7 @@ $(function () {
     getDams(filters).then(amplify.publish.bind(null, 'map.damsChanged'));
 
     // Update the map.
-    activeLayer.getSubLayer(0).setSQL(sql);
+    damSubLayer.setSQL(sql);
   }
 
   function compileSql(conditions) {
