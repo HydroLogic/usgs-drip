@@ -71,10 +71,10 @@ $(function () {
     ') res ' +
     'on dams.damaccessionnumber = res.res_damaccessionnumber ' +
     // Where clauses are inserted by replacement here.
-    ' {{sqlWhere}} ' +
-    'order by hasresults desc';
-  var CARTO_CSS = '#usgs_drip_dams{ marker-fill-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 1; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 10; marker-fill: #b2aaa2; marker-allow-overlap: true; }' +
-    '#usgs_drip_dams[hasresults=true]{ marker-fill: #FF6600; }';
+    'where 1=1 and {{sqlWhere}}';
+  var CARTO_CSS = '#usgs_drip_dams { marker-fill-opacity: 0.9; marker-line-color: #FFF; marker-line-width: 1; marker-line-opacity: 1; marker-placement: point; marker-type: ellipse; marker-width: 10; marker-fill: #FF6600; marker-allow-overlap: true; }' +
+    '#usgs_drip_dams[ar_uniqueid != null] { marker-fill: #33827e; }' +
+    '#usgs_drip_dams[hasresults=false],#usgs_drip_dams[hasresults=null] { marker-fill-opacity: 0.2; marker-line-opacity: 0.2; }';
   var map, defaultLayer, activeLayer;
 
 
@@ -135,7 +135,7 @@ $(function () {
   function compileSql(conditions) {
     if (!conditions) {
       // No filters were provided, so don't add any where clauses to sql.
-      return SQL_TEMPLATE.replace('{{sqlWhere}}', '');
+      return SQL_TEMPLATE.replace('{{sqlWhere}}', '1=1');
     }
 
     var clauses = [];
@@ -155,7 +155,7 @@ $(function () {
       clauses.push(studyTypeClauses.join(' or '));
     }
 
-    var sqlWhere = clauses.length ? 'where ' + clauses.join(' and ') : '';
+    var sqlWhere = clauses.length ? clauses.join(' and ') : '1=1';
     var sql = SQL_TEMPLATE.replace('{{sqlWhere}}', sqlWhere);
 
     return sql;
