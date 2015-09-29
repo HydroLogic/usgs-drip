@@ -63,8 +63,10 @@
 
       <div class="sidebar container">
 
-        <h3>Dam Height</h3>
-        <div class="chart-placeholder"></div>
+        <h3>Dam Height (in feet)</h3>
+        <div>
+          <canvas id="chart-damheight" class="chart-damheight" height="100"></canvas>
+        </div>
 
         <h3>Year Built</h3>
         <div>
@@ -72,17 +74,18 @@
         </div>
 
         <h3>Study Types</h3>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="chart-placeholder"></div>
-          </div>
-          <div class="col-lg-4">
-            <div class="chart-placeholder"></div>
-          </div>
-          <div class="col-lg-4">
-            <div class="chart-placeholder"></div>
-          </div>
-        </div>
+          <h4>Physical</h4>
+            <div>
+              <canvas id="chart-studiesphysical" class="chart-studiesphysical"></canvas>
+            </div>
+          <h4>Biological</h4>
+            <div>
+              <canvas id="chart-studiesbiological" class="chart-studiesbiological" height="170"></canvas>
+            </div>
+          <h4>Water</h4>
+            <div>
+              <canvas id="chart-studieswater" class="chart-studieswater" height="80"></canvas>
+            </div>
 
       </div><!-- end .sidebar -->
 
@@ -224,7 +227,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="js/vendor/amplify.core.min.js"></script>
+    <script src="js/vendor/Chart.HorizontalBar.js"></script>
     <script src="js/chart-damyearbuilt.js"></script>
+    <script src="js/chart-damheight.js"></script>
+    <script src="js/chart-studiesphysical.js"></script>
     <script src="js/map-filters.js"></script>
     <script src="js/map.js"></script>
   </body>
