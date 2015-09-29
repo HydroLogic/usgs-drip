@@ -15,10 +15,12 @@ $(function () {
     zoom: 4,
     shareable: false,
     scrollwheel: true,
-    search: false
+    search: false,
+    tooltip: false
   };
   var infoWindowTemplate = $('#info-window-template').html();
-  var SQL_TEMPLATE = 'select dams.*, ' +
+  var citationsTemplateCompiled = Mustache.render.bind(null, $('#citations-template').html());
+  var DAM_SQL_TEMPLATE = 'select dams.*, ' +
     '  res.*, ' +
     '  (res.physical > 0 OR res.biological > 0 OR res.waterquality > 0) hasresults ' +
     'from clientdemos.usgs_drip_dams dams ' +
@@ -72,7 +74,14 @@ $(function () {
     ') res ' +
     'on dams.damaccessionnumber = res.res_damaccessionnumber ' +
     // Where clauses are inserted by replacement here.
-    'where 1=1 and {{sqlWhere}}';
+    'where {{sqlWhere}}';
+  var CITATION_SQL_TEMPLATE = 'select dams.damaccessionnumber, cit.* ' +
+    'from clientdemos.usgs_drip_dams dams ' +
+    'left outer join clientdemos.usgs_drip_accession_numbers acc ' +
+    'on dams.damaccessionnumber = acc.damaccessionnumber ' +
+    'left outer join clientdemos.usgs_drip_citations cit ' +
+    'on cit.citationaccessionnumber = acc.citationaccessionnumber ' +
+    'where dams.damaccessionnumber = {{damAccessionNumber}}';
   var damSubLayer;
 
 
@@ -84,17 +93,55 @@ $(function () {
   // Get all dams, then publish an event with them.
   getDams().then(amplify.publish.bind(null, 'map.damsChanged'));
 
+  // CartoDB infowindows seem to prevent click event bubbling, so expose this
+  // globally for infowindow templates to have access to it.
+  window.loadDamCitations = loadDamCitations;
+
 
   // Functions
   // ---------
+
+  function loadDamCitations(damAccessionNumber) {
+    var $el = $('.dam-citations');
+    $el.html('<i>Loading...</i>');
+
+    getCitations(damAccessionNumber).then(function (citations) {
+      var html = citationsTemplateCompiled({ citations: citations });
+      $el.html(html);
+    });
+  }
+
+  function getCitations(damAccessionNumber) {
+    var deferred = $.Deferred();
+
+    new cartodb.SQL({ user: 'clientdemos' })
+      .execute(compileCitationSql(damAccessionNumber))
+      .done(function (data) {
+        deferred.resolve(data.rows);
+      })
+      .error(function (err) {
+        console && console.error && console.error(err);
+        deferred.reject(err);
+      });
+
+    return deferred.promise();
+  }
+
+  function compileCitationSql(damAccessionNumber) {
+    return CITATION_SQL_TEMPLATE.replace('{{damAccessionNumber}}', damAccessionNumber);
+  }
 
   function getDams(conditions) {
     var deferred = $.Deferred();
 
     new cartodb.SQL({ user: 'clientdemos' })
-      .execute(compileSql(conditions))
+      .execute(compileDamSql(conditions))
       .done(function (data) {
         deferred.resolve(data.rows);
+      })
+      .error(function (err) {
+        console && console.error && console.error(err);
+        deferred.reject(err);
       });
 
     return deferred.promise();
@@ -104,14 +151,15 @@ $(function () {
     damSubLayer = layers[1].getSubLayer(0);
 
     damSubLayer.infowindow.set({
-      template: infoWindowTemplate
+      template: infoWindowTemplate,
+      sanitizeTemplate: false
     });
 
     amplify.subscribe('mapFilters.filtersChanged', onFiltersChanged);
   }
 
   function onFiltersChanged(filters) {
-    var sql = compileSql(filters);
+    var sql = compileDamSql(filters);
 
     // Get a filtered list of dams, and publish an event with them.
     getDams(filters).then(amplify.publish.bind(null, 'map.damsChanged'));
@@ -120,10 +168,10 @@ $(function () {
     damSubLayer.setSQL(sql);
   }
 
-  function compileSql(conditions) {
+  function compileDamSql(conditions) {
     if (!conditions) {
       // No filters were provided, so don't add any where clauses to sql.
-      return SQL_TEMPLATE.replace('{{sqlWhere}}', '1=1');
+      return DAM_SQL_TEMPLATE.replace('{{sqlWhere}}', '1=1');
     }
 
     var clauses = [];
@@ -144,7 +192,7 @@ $(function () {
     }
 
     var sqlWhere = clauses.length ? clauses.join(' and ') : '1=1';
-    var sql = SQL_TEMPLATE.replace('{{sqlWhere}}', sqlWhere);
+    var sql = DAM_SQL_TEMPLATE.replace('{{sqlWhere}}', sqlWhere);
 
     return sql;
   }

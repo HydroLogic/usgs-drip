@@ -213,10 +213,24 @@
             <p>{{spatver}}</p>
             <h4>vernote</h4>
             <p>{{vernote}}</p>
+            {{#damaccessionnumber}}
+            <h4>citations</h4>
+            <p class="dam-citations"><a href="javascript:loadDamCitations({{damaccessionnumber}})">Load Citations</a></p>
+            {{/damaccessionnumber}}
           </div>
         </div>
         <div class="cartodb-popup-tip-container"></div>
       </div>
+    </script>
+
+    <script type="text/html" id="citations-template">
+      <ol>
+      {{#citations}}
+        <li><a href="{{citationuri}}" target="_blank">
+          {{citationauthor}}. {{citationyear}}. {{citationtitle}}. <i>{{citationjournalorconferencename}}</i>
+        </a></li>
+      {{/citations}}
+      </ol>
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
