@@ -17,6 +17,7 @@ $(function () {
     scrollwheel: true,
     search: false
   };
+  var infoWindowTemplate = $('#info-window-template').html();
   var SQL_TEMPLATE = 'select dams.*, ' +
     '  res.*, ' +
     '  (res.physical > 0 OR res.biological > 0 OR res.waterquality > 0) hasresults ' +
@@ -107,6 +108,10 @@ $(function () {
     defaultLayer = layers[1];
     activeLayer = defaultLayer;
 
+    activeLayer.getSubLayer(0).infowindow.set({
+      template: infoWindowTemplate
+    });
+
     amplify.subscribe('mapFilters.filtersChanged', onFiltersChanged);
   }
 
@@ -117,19 +122,7 @@ $(function () {
     getDams(filters).then(amplify.publish.bind(null, 'map.damsChanged'));
 
     // Update the map.
-    cartodb.createLayer(map, {
-      'user_name': 'clientdemos',
-      type: 'cartodb',
-      sublayers: [{
-        sql: sql,
-        cartocss: CARTO_CSS
-      }]
-    })
-    .addTo(map)
-    .done(function (layer) {
-      map.removeLayer(activeLayer);
-      activeLayer = layer;
-    });
+    activeLayer.getSubLayer(0).setSQL(sql);
   }
 
   function compileSql(conditions) {
