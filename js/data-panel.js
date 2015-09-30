@@ -29,7 +29,8 @@ $(function () {
         paging: true,
         pageLength: 50,
         lengthChange: false,
-        scrollY: 270,
+        // Panel height - 30px
+        scrollY: 120,
         scrollX: true
       });
     }

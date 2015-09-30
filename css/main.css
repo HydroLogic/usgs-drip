@@ -18,7 +18,7 @@ html, body {
 .main-container {
   position: absolute;
   top: 51px;
-  bottom: 300px;
+  bottom: 150px;
   left: 0;
   right: 0;
   overflow: hidden;
@@ -95,7 +95,7 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 300px;
+  height: 150px;
   font-size: .9em;
   box-shadow: -2px 0 2px 0 rgba(0,0,0,.2);
   overflow: hidden;
